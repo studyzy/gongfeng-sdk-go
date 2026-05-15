@@ -29,13 +29,13 @@ _ = json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
 }))
 defer server.Close()
 
-cli, err := NewClient("test-token", &Options{BaseURL: server.URL, APIVersion: "v3"})
-if err != nil {
-t.Fatalf("NewClient returned error: %v", err)
-}
+	client, err := NewClient("test-token", &Options{BaseURL: server.URL, APIVersion: "v3"})
+	if err != nil {
+		t.Fatalf("NewClient returned error: %v", err)
+	}
 
-var result map[string]string
-_, err = cli.Call(context.Background(), http.MethodGet, "/health", nil, &result)
+	var result map[string]string
+	_, err = client.Call(context.Background(), http.MethodGet, "/health", nil, &result)
 if err != nil {
 t.Fatalf("Call returned error: %v", err)
 }
