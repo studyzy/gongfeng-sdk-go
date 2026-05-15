@@ -206,3 +206,132 @@ func TestDeleteProjectMember(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestProjectExtendedOperations(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/owned", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `[{"id":2,"name":"owned"}]`)
+	})
+	mux.HandleFunc("/api/v3/projects/1/members/10", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodGet:
+			w.Header().Set("Content-Type", "application/json")
+			fmt.Fprint(w, `{"id":10,"username":"user1","access_level":30}`)
+		case http.MethodDelete:
+			w.WriteHeader(http.StatusOK)
+		case http.MethodPut:
+			w.Header().Set("Content-Type", "application/json")
+			fmt.Fprint(w, `{"id":10,"username":"user1","access_level":40}`)
+		default:
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+	})
+	mux.HandleFunc("/api/v3/projects/1", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodPut:
+			w.Header().Set("Content-Type", "application/json")
+			fmt.Fprint(w, `{"id":1,"name":"updated"}`)
+		case http.MethodDelete:
+			w.WriteHeader(http.StatusOK)
+		case http.MethodGet:
+			w.Header().Set("Content-Type", "application/json")
+			fmt.Fprint(w, `{"id":1,"name":"my-project"}`)
+		default:
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+	})
+	mux.HandleFunc("/api/v3/projects/1/share", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.WriteHeader(http.StatusOK)
+	})
+	mux.HandleFunc("/api/v3/projects/1/shares", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `[{"project_id":1,"group_id":2,"group_access":30}]`)
+	})
+	mux.HandleFunc("/api/v3/projects/1/share/2", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodDelete {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.WriteHeader(http.StatusOK)
+	})
+	mux.HandleFunc("/api/v3/projects/1/events", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `[{"project_id":1,"action_name":"CREATED"}]`)
+	})
+	mux.HandleFunc("/api/v3/projects/1/star", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.Method {
+		case http.MethodPut, http.MethodGet:
+			fmt.Fprint(w, `true`)
+		case http.MethodDelete:
+			w.WriteHeader(http.StatusOK)
+		default:
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+	})
+	mux.HandleFunc("/api/v3/projects/1/stars", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `[{"project_id":1,"user":{"id":10,"username":"user1"}}]`)
+	})
+
+	member, _, err := client.Projects.GetProjectMember(context.Background(), 1, 10)
+	if err != nil || member.ID != 10 {
+		t.Fatalf("get project member failed: %+v, %v", member, err)
+	}
+	project, _, err := client.Projects.UpdateProject(context.Background(), 1, &UpdateProjectOptions{Name: Ptr("updated")})
+	if err != nil || project.Name != "updated" {
+		t.Fatalf("update project failed: %+v, %v", project, err)
+	}
+	owned, _, err := client.Projects.ListOwnedProjects(context.Background(), nil)
+	if err != nil || len(owned) != 1 {
+		t.Fatalf("list owned projects failed: %+v, %v", owned, err)
+	}
+	if _, err := client.Projects.ShareProject(context.Background(), 1, &ShareProjectOptions{GroupID: Ptr(2), GroupAccess: Ptr(30)}); err != nil {
+		t.Fatal(err)
+	}
+	shares, _, err := client.Projects.ListProjectShares(context.Background(), 1)
+	if err != nil || len(shares) != 1 {
+		t.Fatalf("list shares failed: %+v, %v", shares, err)
+	}
+	if _, err := client.Projects.DeleteProjectShare(context.Background(), 1, 2); err != nil {
+		t.Fatal(err)
+	}
+	events, _, err := client.Projects.ListProjectEvents(context.Background(), 1, nil)
+	if err != nil || len(events) != 1 {
+		t.Fatalf("list events failed: %+v, %v", events, err)
+	}
+	starred, _, err := client.Projects.StarProject(context.Background(), 1)
+	if err != nil || !starred {
+		t.Fatalf("star project failed: %v, %v", starred, err)
+	}
+	starStatus, _, err := client.Projects.GetStarStatus(context.Background(), 1)
+	if err != nil || !starStatus {
+		t.Fatalf("get star status failed: %v, %v", starStatus, err)
+	}
+	stars, _, err := client.Projects.ListProjectStars(context.Background(), 1, nil)
+	if err != nil || len(stars) != 1 {
+		t.Fatalf("list project stars failed: %+v, %v", stars, err)
+	}
+	if _, err := client.Projects.UnstarProject(context.Background(), 1); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := client.Projects.DeleteProject(context.Background(), 1); err != nil {
+		t.Fatal(err)
+	}
+}

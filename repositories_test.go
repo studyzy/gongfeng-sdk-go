@@ -192,3 +192,50 @@ func TestCompare(t *testing.T) {
 		t.Fatalf("expected old_path 'a.go', got %q", result.Diffs[0].OldPath)
 	}
 }
+
+func TestRepositoryRawContentAndCompareArchive(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/repository/blobs/abc123", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		fmt.Fprint(w, "blob content")
+	})
+	mux.HandleFunc("/api/v3/projects/1/repository/commits/abc123/blob", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		fmt.Fprint(w, "commit blob content")
+	})
+	mux.HandleFunc("/api/v3/projects/1/repository/compare/changed_files", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		fmt.Fprint(w, "compare zip")
+	})
+
+	var blobBuf bytes.Buffer
+	if _, err := client.Repositories.GetRawFile(context.Background(), 1, "abc123", &blobBuf, &GetRawFileOptions{FilePath: Ptr("main.go")}); err != nil {
+		t.Fatal(err)
+	}
+	if blobBuf.String() != "blob content" {
+		t.Fatalf("unexpected blob content: %q", blobBuf.String())
+	}
+
+	var commitBlobBuf bytes.Buffer
+	if _, err := client.Repositories.GetCommitRawFile(context.Background(), 1, "abc123", &commitBlobBuf, &GetRawFileOptions{FilePath: Ptr("main.go")}); err != nil {
+		t.Fatal(err)
+	}
+	if commitBlobBuf.String() != "commit blob content" {
+		t.Fatalf("unexpected commit blob content: %q", commitBlobBuf.String())
+	}
+
+	var compareBuf bytes.Buffer
+	if _, err := client.Repositories.DownloadCompareChangedFiles(context.Background(), 1, &compareBuf, &CompareOptions{From: Ptr("main"), To: Ptr("dev")}); err != nil {
+		t.Fatal(err)
+	}
+	if compareBuf.String() != "compare zip" {
+		t.Fatalf("unexpected compare content: %q", compareBuf.String())
+	}
+}

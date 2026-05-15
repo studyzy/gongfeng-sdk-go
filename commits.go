@@ -15,6 +15,14 @@ type CommitComment struct {
 	LineType string `json:"line_type"`
 }
 
+// CreateCommitCommentOptions 表示 CreateCommitComment 的可选参数。
+type CreateCommitCommentOptions struct {
+	Note     *string `json:"note,omitempty" url:"note,omitempty"`
+	Path     *string `json:"path,omitempty" url:"path,omitempty"`
+	Line     *int    `json:"line,omitempty" url:"line,omitempty"`
+	LineType *string `json:"line_type,omitempty" url:"line_type,omitempty"`
+}
+
 // CommitRef 表示提交对应的分支或 tag 引用。
 type CommitRef struct {
 	Type string `json:"type"`
@@ -48,15 +56,21 @@ func (s *CommitsService) GetCommit(ctx context.Context, pid interface{}, sha str
 	return &c, resp, nil
 }
 
+// GetCommitDiffOptions 表示 GetCommitDiff 的可选参数。
+type GetCommitDiffOptions struct {
+	Path             *string `url:"path,omitempty" json:"path,omitempty"`
+	IgnoreWhiteSpace *bool   `url:"ignore_white_space,omitempty" json:"ignore_white_space,omitempty"`
+}
+
 // GetCommitDiff 获取提交的 Diff。
-func (s *CommitsService) GetCommitDiff(ctx context.Context, pid interface{}, sha string) ([]*Diff, *Response, error) {
+func (s *CommitsService) GetCommitDiff(ctx context.Context, pid interface{}, sha string, opts *GetCommitDiffOptions) ([]*Diff, *Response, error) {
 	project, err := parseID(pid)
 	if err != nil {
 		return nil, nil, err
 	}
 	u := fmt.Sprintf("projects/%s/repository/commits/%s/diff", project, pathEscape(sha))
 
-	req, err := s.client.NewRequest(ctx, http.MethodGet, u, nil)
+	req, err := s.client.NewRequest(ctx, http.MethodGet, u, opts)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -68,6 +82,28 @@ func (s *CommitsService) GetCommitDiff(ctx context.Context, pid interface{}, sha
 	}
 
 	return diffs, resp, nil
+}
+
+// CreateCommitComment 为提交添加评论。
+func (s *CommitsService) CreateCommitComment(ctx context.Context, pid interface{}, sha string, opts *CreateCommitCommentOptions) (*CommitComment, *Response, error) {
+	project, err := parseID(pid)
+	if err != nil {
+		return nil, nil, err
+	}
+	u := fmt.Sprintf("projects/%s/repository/commits/%s/comments", project, pathEscape(sha))
+
+	req, err := s.client.NewRequest(ctx, http.MethodPost, u, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var comment CommitComment
+	resp, err := s.client.Do(req, &comment)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return &comment, resp, nil
 }
 
 // ListCommitCommentsOptions 表示 ListCommitComments 的可选参数。
@@ -101,6 +137,7 @@ func (s *CommitsService) ListCommitComments(ctx context.Context, pid interface{}
 type ListCommitsOptions struct {
 	ListOptions
 	RefName *string `url:"ref_name,omitempty" json:"ref_name,omitempty"`
+	Path    *string `url:"path,omitempty" json:"path,omitempty"`
 	Since   *string `url:"since,omitempty" json:"since,omitempty"`
 	Until   *string `url:"until,omitempty" json:"until,omitempty"`
 }
@@ -130,6 +167,7 @@ func (s *CommitsService) ListCommits(ctx context.Context, pid interface{}, opts 
 // ListCommitRefsOptions 表示 ListCommitRefs 的可选参数。
 type ListCommitRefsOptions struct {
 	ListOptions
+	Type *string `url:"type,omitempty" json:"type,omitempty"`
 }
 
 // ListCommitRefs 获取提交对应的分支和 tag 引用。

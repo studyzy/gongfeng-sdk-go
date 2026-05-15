@@ -3,6 +3,7 @@ package gongfeng
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -366,4 +367,20 @@ func (s *MergeRequestsService) UnsubscribeMR(ctx context.Context, pid interface{
 	}
 
 	return &sub, resp, nil
+}
+
+// DownloadMergeRequestChangedFiles 下载合并请求的差异文件集。
+func (s *MergeRequestsService) DownloadMergeRequestChangedFiles(ctx context.Context, pid interface{}, mergeRequestID int, w io.Writer) (*Response, error) {
+	project, err := parseID(pid)
+	if err != nil {
+		return nil, err
+	}
+	u := fmt.Sprintf("projects/%s/merge_requests/%d/changed_files", project, mergeRequestID)
+
+	req, err := s.client.NewRequest(ctx, http.MethodGet, u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, w)
 }

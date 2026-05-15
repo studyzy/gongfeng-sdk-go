@@ -133,6 +133,22 @@ func (s *MilestonesService) GetMilestone(ctx context.Context, pid interface{}, m
 	return &m, resp, nil
 }
 
+// DeleteMilestone 删除里程碑。
+func (s *MilestonesService) DeleteMilestone(ctx context.Context, pid interface{}, milestoneID int) (*Response, error) {
+	project, err := parseID(pid)
+	if err != nil {
+		return nil, err
+	}
+	u := fmt.Sprintf("projects/%s/milestones/%d", project, milestoneID)
+
+	req, err := s.client.NewRequest(ctx, http.MethodDelete, u, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, nil)
+}
+
 // MilestoneIssue 表示里程碑下的缺陷。
 type MilestoneIssue struct {
 	ID          int      `json:"id"`

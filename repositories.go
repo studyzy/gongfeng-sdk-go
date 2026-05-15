@@ -34,6 +34,9 @@ type CompareResult struct {
 	Diffs          []*Diff   `json:"diffs"`
 	CompareTimeout bool      `json:"compare_timeout"`
 	CompareSameRef bool      `json:"compare_same_ref"`
+	Overflow       bool      `json:"over_flow"`
+	FilesTotal     int       `json:"files_total"`
+	CommitsTotal   int       `json:"commits_total"`
 }
 
 // RepositoriesService 处理与仓库相关的 API 调用。
@@ -97,6 +100,11 @@ type GetFileOptions struct {
 	Ref      *string `url:"ref,omitempty" json:"ref,omitempty"`
 }
 
+// GetRawFileOptions 是 GetRawFile 和 GetCommitRawFile 的可选参数。
+type GetRawFileOptions struct {
+	FilePath *string `url:"filepath,omitempty" json:"filepath,omitempty"`
+}
+
 // GetFile 获取仓库中指定文件的内容。
 func (s *RepositoriesService) GetFile(ctx context.Context, pid interface{}, opts *GetFileOptions) (*RepositoryFile, *Response, error) {
 	project, err := parseID(pid)
@@ -123,6 +131,7 @@ func (s *RepositoriesService) GetFile(ctx context.Context, pid interface{}, opts
 type CreateFileOptions struct {
 	FilePath      *string `json:"file_path,omitempty" url:"file_path,omitempty"`
 	BranchName    *string `json:"branch_name,omitempty" url:"branch_name,omitempty"`
+	Encoding      *string `json:"encoding,omitempty" url:"encoding,omitempty"`
 	Content       *string `json:"content,omitempty" url:"content,omitempty"`
 	CommitMessage *string `json:"commit_message,omitempty" url:"commit_message,omitempty"`
 }
@@ -153,6 +162,7 @@ func (s *RepositoriesService) CreateFile(ctx context.Context, pid interface{}, o
 type UpdateFileOptions struct {
 	FilePath      *string `json:"file_path,omitempty" url:"file_path,omitempty"`
 	BranchName    *string `json:"branch_name,omitempty" url:"branch_name,omitempty"`
+	Encoding      *string `json:"encoding,omitempty" url:"encoding,omitempty"`
 	Content       *string `json:"content,omitempty" url:"content,omitempty"`
 	CommitMessage *string `json:"commit_message,omitempty" url:"commit_message,omitempty"`
 }
@@ -204,8 +214,9 @@ func (s *RepositoriesService) DeleteFile(ctx context.Context, pid interface{}, o
 
 // CompareOptions 是 Compare 的可选参数。
 type CompareOptions struct {
-	From *string `url:"from,omitempty" json:"from,omitempty"`
-	To   *string `url:"to,omitempty" json:"to,omitempty"`
+	From     *string `url:"from,omitempty" json:"from,omitempty"`
+	To       *string `url:"to,omitempty" json:"to,omitempty"`
+	Straight *bool   `url:"straight,omitempty" json:"straight,omitempty"`
 }
 
 // Compare 比较项目中两个分支、Tag 或 SHA。
@@ -228,4 +239,52 @@ func (s *RepositoriesService) Compare(ctx context.Context, pid interface{}, opts
 	}
 
 	return &result, resp, nil
+}
+
+// GetRawFile 获取 blob 原始内容。
+func (s *RepositoriesService) GetRawFile(ctx context.Context, pid interface{}, sha string, w io.Writer, opts *GetRawFileOptions) (*Response, error) {
+	project, err := parseID(pid)
+	if err != nil {
+		return nil, err
+	}
+	path := fmt.Sprintf("projects/%s/repository/blobs/%s", project, pathEscape(sha))
+
+	req, err := s.client.NewRequest(ctx, http.MethodGet, path, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, w)
+}
+
+// GetCommitRawFile 获取指定提交中的文件原始内容。
+func (s *RepositoriesService) GetCommitRawFile(ctx context.Context, pid interface{}, sha string, w io.Writer, opts *GetRawFileOptions) (*Response, error) {
+	project, err := parseID(pid)
+	if err != nil {
+		return nil, err
+	}
+	path := fmt.Sprintf("projects/%s/repository/commits/%s/blob", project, pathEscape(sha))
+
+	req, err := s.client.NewRequest(ctx, http.MethodGet, path, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, w)
+}
+
+// DownloadCompareChangedFiles 下载 Compare 差异文件集。
+func (s *RepositoriesService) DownloadCompareChangedFiles(ctx context.Context, pid interface{}, w io.Writer, opts *CompareOptions) (*Response, error) {
+	project, err := parseID(pid)
+	if err != nil {
+		return nil, err
+	}
+	path := fmt.Sprintf("projects/%s/repository/compare/changed_files", project)
+
+	req, err := s.client.NewRequest(ctx, http.MethodGet, path, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.client.Do(req, w)
 }
