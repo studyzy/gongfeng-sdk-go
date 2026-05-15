@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"strings"
 
-gitlab "github.com/xanzy/go-gitlab"
+	gitlabclient "github.com/xanzy/go-gitlab"
 )
 
 const (
@@ -16,13 +16,15 @@ const (
 )
 
 type Options struct {
-BaseURL    string
-APIVersion string
-HTTPClient *http.Client
+	// BaseURL is the Gongfeng host URL, for example: https://code.tencent.com/
+	BaseURL    string
+	// APIVersion is the API version path suffix, for example: v3 or v4.
+	APIVersion string
+	HTTPClient *http.Client
 }
 
 type Client struct {
-*gitlab.Client
+	*gitlabclient.Client
 }
 
 func NewClient(token string, opts *Options) (*Client, error) {
@@ -50,12 +52,12 @@ httpClient = opts.HTTPClient
 
 	httpClient = wrapHTTPClientForVersion(httpClient, apiVersion)
 
-	clientOpts := []gitlab.ClientOptionFunc{gitlab.WithBaseURL(apiURL)}
+	clientOpts := []gitlabclient.ClientOptionFunc{gitlabclient.WithBaseURL(apiURL)}
 	if httpClient != nil {
-		clientOpts = append(clientOpts, gitlab.WithHTTPClient(httpClient))
+		clientOpts = append(clientOpts, gitlabclient.WithHTTPClient(httpClient))
 	}
 
-cli, err := gitlab.NewClient(token, clientOpts...)
+	cli, err := gitlabclient.NewClient(token, clientOpts...)
 if err != nil {
 return nil, err
 }
@@ -63,13 +65,16 @@ return nil, err
 return &Client{Client: cli}, nil
 }
 
-func (c *Client) Call(ctx context.Context, method, endpoint string, payload any, out any, reqOpts ...gitlab.RequestOptionFunc) (*gitlab.Response, error) {
+// Call sends a REST API request to endpoint (relative to /api/{version}/),
+// optionally JSON-encodes payload as the request body, and decodes the response
+// into out.
+func (c *Client) Call(ctx context.Context, method, endpoint string, payload any, out any, requestOptions ...gitlabclient.RequestOptionFunc) (*gitlabclient.Response, error) {
 if c == nil || c.Client == nil {
 return nil, fmt.Errorf("client is nil")
 }
 
 requestPath := strings.TrimPrefix(endpoint, "/")
-	req, err := c.NewRequest(method, requestPath, payload, reqOpts)
+	req, err := c.NewRequest(method, requestPath, payload, requestOptions)
 if err != nil {
 return nil, err
 }
