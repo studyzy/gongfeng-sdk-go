@@ -188,3 +188,83 @@ func TestUpdateIssueNote(t *testing.T) {
 		t.Fatalf("expected body 'Updated note', got %q", note.Body)
 	}
 }
+
+func TestCreateReviewNote(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/reviews/1/notes", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `{"id":3,"body":"review note"}`)
+	})
+
+	note, _, err := client.Notes.CreateReviewNote(context.Background(), 1, 1, &CreateReviewNoteOptions{Body: Ptr("review note")})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if note.ID != 3 {
+		t.Fatalf("expected ID=3, got %d", note.ID)
+	}
+}
+
+func TestListReviewNotes(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/reviews/1/notes", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `[{"id":3,"body":"review note"}]`)
+	})
+
+	notes, _, err := client.Notes.ListReviewNotes(context.Background(), 1, 1, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(notes) != 1 {
+		t.Fatalf("expected 1 note, got %d", len(notes))
+	}
+}
+
+func TestGetReviewNote(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/reviews/1/notes/3", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `{"id":3,"body":"review note"}`)
+	})
+
+	note, _, err := client.Notes.GetReviewNote(context.Background(), 1, 1, 3)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if note.ID != 3 {
+		t.Fatalf("expected ID=3, got %d", note.ID)
+	}
+}
+
+func TestUpdateReviewNote(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/reviews/1/notes/3", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPut {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `{"id":3,"body":"updated review note"}`)
+	})
+
+	note, _, err := client.Notes.UpdateReviewNote(context.Background(), 1, 1, 3, &UpdateReviewNoteOptions{Body: Ptr("updated review note")})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if note.Body != "updated review note" {
+		t.Fatalf("expected updated body, got %q", note.Body)
+	}
+}

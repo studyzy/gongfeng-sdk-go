@@ -1,6 +1,7 @@
 package gongfeng
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -289,5 +290,24 @@ func TestUnsubscribeMR(t *testing.T) {
 	}
 	if sub.Subscribed {
 		t.Fatal("expected subscribed=false")
+	}
+}
+
+func TestDownloadMergeRequestChangedFiles(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/merge_requests/1/changed_files", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		fmt.Fprint(w, "mr changed files")
+	})
+
+	var buf bytes.Buffer
+	if _, err := client.MergeRequests.DownloadMergeRequestChangedFiles(context.Background(), 1, 1, &buf); err != nil {
+		t.Fatal(err)
+	}
+	if buf.String() != "mr changed files" {
+		t.Fatalf("unexpected body: %q", buf.String())
 	}
 }

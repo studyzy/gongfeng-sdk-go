@@ -90,6 +90,26 @@ func TestListIssues(t *testing.T) {
 	}
 }
 
+func TestListUserIssues(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/issues", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `[{"id":1,"iid":1,"title":"Bug1"}]`)
+	})
+
+	issues, _, err := client.Issues.ListUserIssues(context.Background(), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(issues) != 1 {
+		t.Fatalf("expected 1 issue, got %d", len(issues))
+	}
+}
+
 func TestGetIssue(t *testing.T) {
 	client, mux := setup(t)
 
@@ -124,6 +144,58 @@ func TestDeleteIssue(t *testing.T) {
 	})
 
 	_, err := client.Issues.DeleteIssue(context.Background(), 1, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestGetIssueSubscription(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/issues/1/subscribe", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `true`)
+	})
+
+	subscribed, _, err := client.Issues.GetIssueSubscription(context.Background(), 1, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !subscribed {
+		t.Fatal("expected subscribed=true")
+	}
+}
+
+func TestSubscribeIssue(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/issues/1/subscribe", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPut {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.WriteHeader(http.StatusOK)
+	})
+
+	_, err := client.Issues.SubscribeIssue(context.Background(), 1, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestUnsubscribeIssue(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/issues/1/unsubscribe", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPut {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.WriteHeader(http.StatusOK)
+	})
+
+	_, err := client.Issues.UnsubscribeIssue(context.Background(), 1, 1)
 	if err != nil {
 		t.Fatal(err)
 	}

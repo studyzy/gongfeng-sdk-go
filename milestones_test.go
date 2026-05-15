@@ -115,6 +115,22 @@ func TestGetMilestone(t *testing.T) {
 	}
 }
 
+func TestDeleteMilestone(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/milestones/1", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodDelete {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.WriteHeader(http.StatusOK)
+	})
+
+	_, err := client.Milestones.DeleteMilestone(context.Background(), 1, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestListMilestoneIssues(t *testing.T) {
 	client, mux := setup(t)
 

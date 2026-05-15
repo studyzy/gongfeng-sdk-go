@@ -47,7 +47,7 @@ func TestGetCommitDiff(t *testing.T) {
 		fmt.Fprint(w, `[{"old_path":"a.go","new_path":"a.go","diff":"@@ -1 +1 @@"}]`)
 	})
 
-	diffs, _, err := client.Commits.GetCommitDiff(context.Background(), 1, "abc123")
+	diffs, _, err := client.Commits.GetCommitDiff(context.Background(), 1, "abc123", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,6 +82,28 @@ func TestListCommitComments(t *testing.T) {
 	}
 	if comments[0].Line != 10 {
 		t.Fatalf("expected line 10, got %d", comments[0].Line)
+	}
+}
+
+func TestCreateCommitComment(t *testing.T) {
+	client, mux := setup(t)
+
+	mux.HandleFunc("/api/v3/projects/1/repository/commits/abc123/comments", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Fatalf("unexpected method: %s", r.Method)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `{"note":"looks good","path":"main.go","line":10}`)
+	})
+
+	comment, _, err := client.Commits.CreateCommitComment(context.Background(), 1, "abc123", &CreateCommitCommentOptions{
+		Note: Ptr("looks good"),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if comment.Note != "looks good" {
+		t.Fatalf("expected note 'looks good', got %q", comment.Note)
 	}
 }
 
