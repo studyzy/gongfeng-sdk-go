@@ -8,21 +8,21 @@ import (
 
 // Issue 表示一个缺陷。
 type Issue struct {
-	ID          int        `json:"id"`
-	IID         int        `json:"iid"`
-	ProjectID   int        `json:"project_id"`
-	Title       string     `json:"title"`
-	Description string     `json:"description"`
-	State       string     `json:"state"`
-	ResolveState string    `json:"resolve_state"`
-	Grade       *int       `json:"grade"`
-	Labels      []string   `json:"labels"`
-	Assignees   []*User    `json:"assignees"`
-	Assignee    *User      `json:"assignee"`
-	Author      *User      `json:"author"`
-	CreatedAt   Time       `json:"created_at"`
-	UpdatedAt   Time       `json:"updated_at"`
-	Milestone   *Milestone `json:"milestone"`
+	ID           int        `json:"id"`
+	IID          int        `json:"iid"`
+	ProjectID    int        `json:"project_id"`
+	Title        string     `json:"title"`
+	Description  string     `json:"description"`
+	State        string     `json:"state"`
+	ResolveState string     `json:"resolve_state"`
+	Grade        *int       `json:"grade"`
+	Labels       []string   `json:"labels"`
+	Assignees    []*User    `json:"assignees"`
+	Assignee     *User      `json:"assignee"`
+	Author       *User      `json:"author"`
+	CreatedAt    Time       `json:"created_at"`
+	UpdatedAt    Time       `json:"updated_at"`
+	Milestone    *Milestone `json:"milestone"`
 }
 
 // IssuesService 处理与 Issue 相关的 API 调用。
