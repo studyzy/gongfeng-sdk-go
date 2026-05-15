@@ -44,7 +44,7 @@ apiVersion = opts.APIVersion
 httpClient = opts.HTTPClient
 }
 
-	apiURL, err := buildAPIURL(baseURL, apiVersion)
+	apiURL, err := buildAPIURL(baseURL)
 	if err != nil {
 		return nil, err
 	}
@@ -82,13 +82,12 @@ req = req.WithContext(ctx)
 return c.Do(req, out)
 }
 
-func buildAPIURL(baseURL, apiVersion string) (string, error) {
+func buildAPIURL(baseURL string) (string, error) {
 	u, err := url.Parse(baseURL)
 	if err != nil {
 		return "", fmt.Errorf("invalid base url: %w", err)
 	}
 
-	_ = apiVersion
 	basePath := path.Join(strings.TrimSuffix(u.Path, "/"))
 	if basePath == "." {
 		basePath = ""
