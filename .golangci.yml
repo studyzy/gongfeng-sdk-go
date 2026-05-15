@@ -1,0 +1,22 @@
+run:
+  timeout: 3m
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - ineffassign
+    - gosimple
+    - gofmt
+    - goimports
+    - misspell
+
+linters-settings:
+  goimports:
+    local-prefixes: github.com/studyzy/gongfeng-sdk-go
+
+issues:
+  max-issues-per-linter: 50
+  max-same-issues: 3
