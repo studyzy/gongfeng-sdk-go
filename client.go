@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"path"
 	"strings"
 
 gitlab "github.com/xanzy/go-gitlab"
@@ -88,10 +87,7 @@ func buildAPIURL(baseURL string) (string, error) {
 		return "", fmt.Errorf("invalid base url: %w", err)
 	}
 
-	basePath := path.Join(strings.TrimSuffix(u.Path, "/"))
-	if basePath == "." {
-		basePath = ""
-	}
+	basePath := strings.TrimSuffix(u.Path, "/")
 	if basePath == "" {
 		u.Path = "/"
 	} else {

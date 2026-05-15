@@ -19,26 +19,26 @@ go get github.com/studyzy/gongfeng-sdk-go
 package main
 
 import (
-"context"
-"fmt"
-"net/http"
+	"context"
+	"fmt"
+	"net/http"
 
-gongfeng "github.com/studyzy/gongfeng-sdk-go"
+	gongfeng "github.com/studyzy/gongfeng-sdk-go"
 )
 
 func main() {
-client, err := gongfeng.NewClient("your-private-token", nil)
-if err != nil {
-panic(err)
-}
+	client, err := gongfeng.NewClient("your-private-token", nil)
+	if err != nil {
+		panic(err)
+	}
 
-var result map[string]any
-_, err = client.Call(context.Background(), http.MethodGet, "/projects", nil, &result)
-if err != nil {
-panic(err)
-}
+	var result map[string]any
+	_, err = client.Call(context.Background(), http.MethodGet, "/projects", nil, &result)
+	if err != nil {
+		panic(err)
+	}
 
-fmt.Println(result)
+	fmt.Println(result)
 }
 ```
 
@@ -46,7 +46,7 @@ fmt.Println(result)
 
 ```go
 client, err := gongfeng.NewClient("token", &gongfeng.Options{
-BaseURL:    "https://code.tencent.com/",
-APIVersion: "v3",
+	BaseURL:    "https://code.tencent.com/",
+	APIVersion: "v3",
 })
 ```
