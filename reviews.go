@@ -219,9 +219,9 @@ func (s *ReviewsService) CreateCommitReview(ctx context.Context, pid interface{}
 type ListCommitReviewsOptions struct {
 	ListOptions
 	AuthorID *int    `url:"author_id,omitempty" json:"author_id,omitempty"`
-	State   *string `url:"state,omitempty" json:"state,omitempty"`
-	OrderBy *string `url:"order_by,omitempty" json:"order_by,omitempty"`
-	Sort    *string `url:"sort,omitempty" json:"sort,omitempty"`
+	State    *string `url:"state,omitempty" json:"state,omitempty"`
+	OrderBy  *string `url:"order_by,omitempty" json:"order_by,omitempty"`
+	Sort     *string `url:"sort,omitempty" json:"sort,omitempty"`
 }
 
 // ListCommitReviews 获取项目的 Commit 评审列表。
