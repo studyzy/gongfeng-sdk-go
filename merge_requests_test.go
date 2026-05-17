@@ -141,7 +141,7 @@ func TestGetMergeRequestChanges(t *testing.T) {
 func TestListMergeRequestCommits(t *testing.T) {
 	client, mux := setup(t)
 
-	mux.HandleFunc("/api/v3/projects/1/merge_requests/1/commits", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/v3/projects/1/merge_request/1/commits", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			t.Fatalf("unexpected method: %s", r.Method)
 		}
@@ -296,7 +296,7 @@ func TestUnsubscribeMR(t *testing.T) {
 func TestDownloadMergeRequestChangedFiles(t *testing.T) {
 	client, mux := setup(t)
 
-	mux.HandleFunc("/api/v3/projects/1/merge_requests/1/changed_files", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/v3/projects/1/merge_request/1/changed_files", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			t.Fatalf("unexpected method: %s", r.Method)
 		}

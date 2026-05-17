@@ -156,8 +156,10 @@ PUT /api/v3/projects/:id/merge_request/:merge_request_id/merge
 
 
 ```
-GET /api/v3/projects/:id/merge_requests/:merge_request_id/commits
+GET /api/v3/projects/:id/merge_request/:merge_request_id/commits
 ```
+
+> **注意**：原官方文档此处路径为 `merge_requests`（复数），但实际 API 使用 `merge_request`（单数），复数路径返回 404。
 
 
 **参数**
@@ -697,8 +699,10 @@ PUT /api/v3/projects/:id/merge_request/:merge_request_id/unsubscribe
 
 
 ```
-GET /api/v3/projects/:id/merge_requests/:merge_request_id/changed_files
+GET /api/v3/projects/:id/merge_request/:merge_request_id/changed_files
 ```
+
+> **注意**：原官方文档此处路径为 `merge_requests`（复数），但实际 API 使用 `merge_request`（单数），复数路径返回 404。
 
 
 **参数：**
