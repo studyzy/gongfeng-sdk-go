@@ -4,6 +4,7 @@ package gongfeng
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -17,7 +18,7 @@ import (
 
 const (
 	// DefaultBaseURL 是工蜂公有云的默认地址。
-	DefaultBaseURL = "https://code.tencent.com/"
+	DefaultBaseURL = "https://git.code.tencent.com/"
 
 	apiVersionPath = "api/v3"
 	userAgent      = "gongfeng-sdk-go"
@@ -103,7 +104,7 @@ func NewClient(token string, options ...ClientOptionFunc) (*Client, error) {
 	}
 
 	if c.httpClient == nil {
-		c.httpClient = &http.Client{}
+		c.httpClient = newDefaultHTTPClient()
 	}
 
 	// 初始化所有 Service
@@ -129,6 +130,26 @@ func NewClient(token string, options ...ClientOptionFunc) (*Client, error) {
 	c.Webhooks = &WebhooksService{client: c}
 
 	return c, nil
+}
+
+// newDefaultHTTPClient 创建默认 HTTP 客户端，启用兼容旧版 TLS 密码套件，
+// 以支持部分工蜂实例使用的较旧 TLS 配置。
+func newDefaultHTTPClient() *http.Client {
+	var suites []uint16
+	for _, s := range tls.CipherSuites() {
+		suites = append(suites, s.ID)
+	}
+	for _, s := range tls.InsecureCipherSuites() {
+		suites = append(suites, s.ID)
+	}
+	return &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				MinVersion:   tls.VersionTLS12,
+				CipherSuites: suites,
+			},
+		},
+	}
 }
 
 // setBaseURL 解析并设置基础 URL，自动拼接 /api/v3/ 路径。

@@ -37,7 +37,7 @@ func TestNewClientDefault(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewClient: %v", err)
 	}
-	if c.baseURL.String() != "https://code.tencent.com/api/v3/" {
+	if c.baseURL.String() != "https://git.code.tencent.com/api/v3/" {
 		t.Fatalf("unexpected baseURL: %s", c.baseURL.String())
 	}
 	if c.Projects == nil || c.Groups == nil || c.MergeRequests == nil {
