@@ -127,7 +127,7 @@ func (s *MergeRequestsService) ListMergeRequestCommits(ctx context.Context, pid 
 	if err != nil {
 		return nil, nil, err
 	}
-	u := fmt.Sprintf("projects/%s/merge_requests/%d/commits", project, mergeRequestID)
+	u := fmt.Sprintf("projects/%s/merge_request/%d/commits", project, mergeRequestID)
 
 	req, err := s.client.NewRequest(ctx, http.MethodGet, u, opts)
 	if err != nil {
@@ -375,7 +375,7 @@ func (s *MergeRequestsService) DownloadMergeRequestChangedFiles(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	u := fmt.Sprintf("projects/%s/merge_requests/%d/changed_files", project, mergeRequestID)
+	u := fmt.Sprintf("projects/%s/merge_request/%d/changed_files", project, mergeRequestID)
 
 	req, err := s.client.NewRequest(ctx, http.MethodGet, u, nil)
 	if err != nil {
