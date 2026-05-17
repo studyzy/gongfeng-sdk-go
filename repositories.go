@@ -9,34 +9,34 @@ import (
 
 // TreeNode 表示仓库文件树中的一个节点。
 type TreeNode struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Type string `json:"type"`
-	Mode string `json:"mode"`
+	ID   string `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
+	Type string `json:"type,omitempty"`
+	Mode string `json:"mode,omitempty"`
 }
 
 // RepositoryFile 表示仓库中的一个文件。
 type RepositoryFile struct {
-	FileName string `json:"file_name"`
-	FilePath string `json:"file_path"`
-	Size     int    `json:"size"`
-	Encoding string `json:"encoding"`
-	Content  string `json:"content"`
-	Ref      string `json:"ref"`
-	BlobID   string `json:"blob_id"`
-	CommitID string `json:"commit_id"`
+	FileName string `json:"file_name,omitempty"`
+	FilePath string `json:"file_path,omitempty"`
+	Size     int    `json:"size,omitempty"`
+	Encoding string `json:"encoding,omitempty"`
+	Content  string `json:"content,omitempty"`
+	Ref      string `json:"ref,omitempty"`
+	BlobID   string `json:"blob_id,omitempty"`
+	CommitID string `json:"commit_id,omitempty"`
 }
 
 // CompareResult 表示两个分支/Tag/SHA 的比较结果。
 type CompareResult struct {
-	Commit         *Commit   `json:"commit"`
-	Commits        []*Commit `json:"commits"`
-	Diffs          []*Diff   `json:"diffs"`
-	CompareTimeout bool      `json:"compare_timeout"`
-	CompareSameRef bool      `json:"compare_same_ref"`
-	Overflow       bool      `json:"over_flow"`
-	FilesTotal     int       `json:"files_total"`
-	CommitsTotal   int       `json:"commits_total"`
+	Commit         *Commit   `json:"commit,omitempty"`
+	Commits        []*Commit `json:"commits,omitempty"`
+	Diffs          []*Diff   `json:"diffs,omitempty"`
+	CompareTimeout bool      `json:"compare_timeout,omitempty"`
+	CompareSameRef bool      `json:"compare_same_ref,omitempty"`
+	Overflow       bool      `json:"over_flow,omitempty"`
+	FilesTotal     int       `json:"files_total,omitempty"`
+	CommitsTotal   int       `json:"commits_total,omitempty"`
 }
 
 // RepositoriesService 处理与仓库相关的 API 调用。

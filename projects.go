@@ -8,66 +8,66 @@ import (
 
 // Project 表示工蜂项目。
 type Project struct {
-	ID                   int            `json:"id"`
-	Description          string         `json:"description"`
-	Public               bool           `json:"public"`
-	Archived             bool           `json:"archived"`
-	VisibilityLevel      int            `json:"visibility_level"`
-	Namespace            *Namespace     `json:"namespace"`
-	Name                 string         `json:"name"`
-	NameWithNamespace    string         `json:"name_with_namespace"`
-	Path                 string         `json:"path"`
-	PathWithNamespace    string         `json:"path_with_namespace"`
-	DefaultBranch        string         `json:"default_branch"`
-	SSHURLToRepo         string         `json:"ssh_url_to_repo"`
-	HTTPURLToRepo        string         `json:"http_url_to_repo"`
-	HTTPSURLToRepo       string         `json:"https_url_to_repo"`
-	WebURL               string         `json:"web_url"`
-	TagList              []string       `json:"tag_list"`
-	IssuesEnabled        bool           `json:"issues_enabled"`
-	MergeRequestsEnabled bool           `json:"merge_requests_enabled"`
-	WikiEnabled          bool           `json:"wiki_enabled"`
-	SnippetsEnabled      bool           `json:"snippets_enabled"`
-	ReviewEnabled        bool           `json:"review_enabled"`
-	ForkEnabled          bool           `json:"fork_enabled"`
-	CreatedAt            Time           `json:"created_at"`
-	LastActivityAt       Time           `json:"last_activity_at"`
-	CreatorID            int            `json:"creator_id"`
-	AvatarURL            string         `json:"avatar_url"`
-	WatchsCount          int            `json:"watchs_count"`
-	StarsCount           int            `json:"stars_count"`
-	ForksCount           int            `json:"forks_count"`
-	ConfigStorage        *ConfigStorage `json:"config_storage"`
-	Statistics           *Statistics    `json:"statistics"`
+	ID                   int            `json:"id,omitempty"`
+	Description          string         `json:"description,omitempty"`
+	Public               bool           `json:"public,omitempty"`
+	Archived             bool           `json:"archived,omitempty"`
+	VisibilityLevel      int            `json:"visibility_level,omitempty"`
+	Namespace            *Namespace     `json:"namespace,omitempty"`
+	Name                 string         `json:"name,omitempty"`
+	NameWithNamespace    string         `json:"name_with_namespace,omitempty"`
+	Path                 string         `json:"path,omitempty"`
+	PathWithNamespace    string         `json:"path_with_namespace,omitempty"`
+	DefaultBranch        string         `json:"default_branch,omitempty"`
+	SSHURLToRepo         string         `json:"ssh_url_to_repo,omitempty"`
+	HTTPURLToRepo        string         `json:"http_url_to_repo,omitempty"`
+	HTTPSURLToRepo       string         `json:"https_url_to_repo,omitempty"`
+	WebURL               string         `json:"web_url,omitempty"`
+	TagList              []string       `json:"tag_list,omitempty"`
+	IssuesEnabled        bool           `json:"issues_enabled,omitempty"`
+	MergeRequestsEnabled bool           `json:"merge_requests_enabled,omitempty"`
+	WikiEnabled          bool           `json:"wiki_enabled,omitempty"`
+	SnippetsEnabled      bool           `json:"snippets_enabled,omitempty"`
+	ReviewEnabled        bool           `json:"review_enabled,omitempty"`
+	ForkEnabled          bool           `json:"fork_enabled,omitempty"`
+	CreatedAt            Time           `json:"created_at,omitempty"`
+	LastActivityAt       Time           `json:"last_activity_at,omitempty"`
+	CreatorID            int            `json:"creator_id,omitempty"`
+	AvatarURL            string         `json:"avatar_url,omitempty"`
+	WatchsCount          int            `json:"watchs_count,omitempty"`
+	StarsCount           int            `json:"stars_count,omitempty"`
+	ForksCount           int            `json:"forks_count,omitempty"`
+	ConfigStorage        *ConfigStorage `json:"config_storage,omitempty"`
+	Statistics           *Statistics    `json:"statistics,omitempty"`
 }
 
 // ProjectShare 表示项目共享到组的关系。
 type ProjectShare struct {
-	ProjectID   int  `json:"project_id"`
-	GroupID     int  `json:"group_id"`
-	GroupAccess int  `json:"group_access"`
-	CreatedAt   Time `json:"created_at"`
-	UpdatedAt   Time `json:"updated_at"`
+	ProjectID   int  `json:"project_id,omitempty"`
+	GroupID     int  `json:"group_id,omitempty"`
+	GroupAccess int  `json:"group_access,omitempty"`
+	CreatedAt   Time `json:"created_at,omitempty"`
+	UpdatedAt   Time `json:"updated_at,omitempty"`
 }
 
 // ProjectEvent 表示项目事件。
 type ProjectEvent struct {
-	Title          string                 `json:"title"`
-	ProjectID      int                    `json:"project_id"`
-	ActionName     string                 `json:"action_name"`
-	TargetID       int                    `json:"target_id"`
-	TargetType     string                 `json:"target_type"`
-	AuthorID       int                    `json:"author_id"`
-	AuthorUsername string                 `json:"author_username"`
-	CreatedAt      Time                   `json:"created_at"`
-	TargetTitle    string                 `json:"target_title"`
-	Data           map[string]interface{} `json:"data"`
+	Title          string                 `json:"title,omitempty"`
+	ProjectID      int                    `json:"project_id,omitempty"`
+	ActionName     string                 `json:"action_name,omitempty"`
+	TargetID       int                    `json:"target_id,omitempty"`
+	TargetType     string                 `json:"target_type,omitempty"`
+	AuthorID       int                    `json:"author_id,omitempty"`
+	AuthorUsername string                 `json:"author_username,omitempty"`
+	CreatedAt      Time                   `json:"created_at,omitempty"`
+	TargetTitle    string                 `json:"target_title,omitempty"`
+	Data           map[string]interface{} `json:"data,omitempty"`
 }
 
 // ProjectStar 表示项目标星关系。
 type ProjectStar struct {
-	ProjectID int   `json:"project_id"`
-	User      *User `json:"user"`
+	ProjectID int   `json:"project_id,omitempty"`
+	User      *User `json:"user,omitempty"`
 }
 
 // ProjectsService 处理与工蜂项目相关的 API。

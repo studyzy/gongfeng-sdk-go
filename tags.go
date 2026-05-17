@@ -8,9 +8,9 @@ import (
 
 // Tag 表示一个 Git 标签。
 type Tag struct {
-	Name    string  `json:"name"`
-	Message string  `json:"message"`
-	Commit  *Commit `json:"commit"`
+	Name    string  `json:"name,omitempty"`
+	Message string  `json:"message,omitempty"`
+	Commit  *Commit `json:"commit,omitempty"`
 }
 
 // TagsService 处理与 Tag 相关的 API 调用。

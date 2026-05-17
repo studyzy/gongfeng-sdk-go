@@ -8,11 +8,11 @@ import (
 
 // Release 表示一个项目发布版本。
 type Release struct {
-	TagName     string  `json:"tag_name"`
-	Description string  `json:"description"`
-	CreatedAt   Time    `json:"created_at"`
-	Author      *User   `json:"author"`
-	Commit      *Commit `json:"commit"`
+	TagName     string  `json:"tag_name,omitempty"`
+	Description string  `json:"description,omitempty"`
+	CreatedAt   Time    `json:"created_at,omitempty"`
+	Author      *User   `json:"author,omitempty"`
+	Commit      *Commit `json:"commit,omitempty"`
 }
 
 // ReleasesService 处理与 Release 相关的 API 调用。

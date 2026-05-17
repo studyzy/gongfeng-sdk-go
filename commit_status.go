@@ -8,22 +8,22 @@ import (
 
 // CommitStatus 表示一个提交的检测状态。
 type CommitStatus struct {
-	ID          int    `json:"id"`
-	SHA         string `json:"sha"`
-	Ref         string `json:"ref"`
-	Status      string `json:"status"`
-	Name        string `json:"name"`
-	TargetURL   string `json:"target_url"`
-	Description string `json:"description"`
-	CreatedAt   Time   `json:"created_at"`
-	Author      *User  `json:"author"`
+	ID          int    `json:"id,omitempty"`
+	SHA         string `json:"sha,omitempty"`
+	Ref         string `json:"ref,omitempty"`
+	Status      string `json:"status,omitempty"`
+	Name        string `json:"name,omitempty"`
+	TargetURL   string `json:"target_url,omitempty"`
+	Description string `json:"description,omitempty"`
+	CreatedAt   Time   `json:"created_at,omitempty"`
+	Author      *User  `json:"author,omitempty"`
 }
 
 // CommitStatusResult 表示一个提交的检测组合结果。
 type CommitStatusResult struct {
-	SHA      string          `json:"sha"`
-	Status   string          `json:"status"`
-	Statuses []*CommitStatus `json:"statuses"`
+	SHA      string          `json:"sha,omitempty"`
+	Status   string          `json:"status,omitempty"`
+	Statuses []*CommitStatus `json:"statuses,omitempty"`
 }
 
 // CommitStatusService 处理与提交检测状态相关的 API 调用。

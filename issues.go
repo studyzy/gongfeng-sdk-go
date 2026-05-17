@@ -8,21 +8,21 @@ import (
 
 // Issue 表示一个缺陷。
 type Issue struct {
-	ID           int        `json:"id"`
-	IID          int        `json:"iid"`
-	ProjectID    int        `json:"project_id"`
-	Title        string     `json:"title"`
-	Description  string     `json:"description"`
-	State        string     `json:"state"`
-	ResolveState string     `json:"resolve_state"`
-	Grade        *int       `json:"grade"`
-	Labels       []string   `json:"labels"`
-	Assignees    []*User    `json:"assignees"`
-	Assignee     *User      `json:"assignee"`
-	Author       *User      `json:"author"`
-	CreatedAt    Time       `json:"created_at"`
-	UpdatedAt    Time       `json:"updated_at"`
-	Milestone    *Milestone `json:"milestone"`
+	ID           int        `json:"id,omitempty"`
+	IID          int        `json:"iid,omitempty"`
+	ProjectID    int        `json:"project_id,omitempty"`
+	Title        string     `json:"title,omitempty"`
+	Description  string     `json:"description,omitempty"`
+	State        string     `json:"state,omitempty"`
+	ResolveState string     `json:"resolve_state,omitempty"`
+	Grade        *int       `json:"grade,omitempty"`
+	Labels       []string   `json:"labels,omitempty"`
+	Assignees    []*User    `json:"assignees,omitempty"`
+	Assignee     *User      `json:"assignee,omitempty"`
+	Author       *User      `json:"author,omitempty"`
+	CreatedAt    Time       `json:"created_at,omitempty"`
+	UpdatedAt    Time       `json:"updated_at,omitempty"`
+	Milestone    *Milestone `json:"milestone,omitempty"`
 }
 
 // IssuesService 处理与 Issue 相关的 API 调用。

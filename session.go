@@ -7,13 +7,13 @@ import (
 
 // Session 表示通过登录获取的用户会话信息。
 type Session struct {
-	ID           int    `json:"id"`
-	Username     string `json:"username"`
-	Email        string `json:"email"`
-	Name         string `json:"name"`
-	PrivateToken string `json:"private_token"`
-	State        string `json:"state"`
-	AvatarURL    string `json:"avatar_url"`
+	ID           int    `json:"id,omitempty"`
+	Username     string `json:"username,omitempty"`
+	Email        string `json:"email,omitempty"`
+	Name         string `json:"name,omitempty"`
+	PrivateToken string `json:"private_token,omitempty"`
+	State        string `json:"state,omitempty"`
+	AvatarURL    string `json:"avatar_url,omitempty"`
 }
 
 // SessionService 处理与用户会话相关的 API 调用。

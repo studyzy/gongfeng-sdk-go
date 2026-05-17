@@ -8,9 +8,9 @@ import (
 
 // Watcher 表示项目关注关系。
 type Watcher struct {
-	ProjectID int   `json:"project_id"`
-	Mute      bool  `json:"mute"`
-	User      *User `json:"user"`
+	ProjectID int   `json:"project_id,omitempty"`
+	Mute      bool  `json:"mute,omitempty"`
+	User      *User `json:"user,omitempty"`
 }
 
 // WatchersService 处理与项目关注者相关的 API 调用。

@@ -8,11 +8,11 @@ import (
 
 // Branch 表示工蜂代码分支。
 type Branch struct {
-	Name               string  `json:"name"`
-	Protected          bool    `json:"protected"`
-	DevelopersCanPush  bool    `json:"developers_can_push"`
-	DevelopersCanMerge bool    `json:"developers_can_merge"`
-	Commit             *Commit `json:"commit"`
+	Name               string  `json:"name,omitempty"`
+	Protected          bool    `json:"protected,omitempty"`
+	DevelopersCanPush  bool    `json:"developers_can_push,omitempty"`
+	DevelopersCanMerge bool    `json:"developers_can_merge,omitempty"`
+	Commit             *Commit `json:"commit,omitempty"`
 }
 
 // BranchesService 处理与工蜂分支相关的 API。
@@ -115,9 +115,9 @@ func (s *BranchesService) GetBranch(ctx context.Context, pid interface{}, branch
 
 // ProtectedBranch 表示保护分支的详情。
 type ProtectedBranch struct {
-	Name               string `json:"name"`
-	DevelopersCanPush  bool   `json:"developers_can_push"`
-	DevelopersCanMerge bool   `json:"developers_can_merge"`
+	Name               string `json:"name,omitempty"`
+	DevelopersCanPush  bool   `json:"developers_can_push,omitempty"`
+	DevelopersCanMerge bool   `json:"developers_can_merge,omitempty"`
 }
 
 // GetProtectedBranch 获取保护分支详情。

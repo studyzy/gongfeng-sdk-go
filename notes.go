@@ -8,15 +8,15 @@ import (
 
 // Note 表示一条评论。
 type Note struct {
-	ID           int    `json:"id"`
-	Body         string `json:"body"`
-	Attachment   string `json:"attachment"`
-	Author       *User  `json:"author"`
-	CreatedAt    Time   `json:"created_at"`
-	UpdatedAt    Time   `json:"updated_at"`
-	System       bool   `json:"system"`
-	NoteableID   int    `json:"noteable_id"`
-	NoteableType string `json:"noteable_type"`
+	ID           int    `json:"id,omitempty"`
+	Body         string `json:"body,omitempty"`
+	Attachment   string `json:"attachment,omitempty"`
+	Author       *User  `json:"author,omitempty"`
+	CreatedAt    Time   `json:"created_at,omitempty"`
+	UpdatedAt    Time   `json:"updated_at,omitempty"`
+	System       bool   `json:"system,omitempty"`
+	NoteableID   int    `json:"noteable_id,omitempty"`
+	NoteableType string `json:"noteable_type,omitempty"`
 }
 
 // NotesService 处理与 Note 相关的 API 调用。

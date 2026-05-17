@@ -94,92 +94,92 @@ const (
 
 // Namespace 表示工蜂命名空间。
 type Namespace struct {
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	Path        string `json:"path"`
-	Kind        string `json:"kind"`
-	WebURL      string `json:"web_url"`
-	Description string `json:"description"`
-	AvatarURL   string `json:"avatar_url"`
+	ID          int    `json:"id,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Path        string `json:"path,omitempty"`
+	Kind        string `json:"kind,omitempty"`
+	WebURL      string `json:"web_url,omitempty"`
+	Description string `json:"description,omitempty"`
+	AvatarURL   string `json:"avatar_url,omitempty"`
 }
 
 // User 表示工蜂用户信息。
 type User struct {
-	ID        int    `json:"id"`
-	Username  string `json:"username"`
-	Name      string `json:"name"`
-	State     string `json:"state"`
-	AvatarURL string `json:"avatar_url"`
-	WebURL    string `json:"web_url"`
+	ID        int    `json:"id,omitempty"`
+	Username  string `json:"username,omitempty"`
+	Name      string `json:"name,omitempty"`
+	State     string `json:"state,omitempty"`
+	AvatarURL string `json:"avatar_url,omitempty"`
+	WebURL    string `json:"web_url,omitempty"`
 }
 
 // UserDetail 表示工蜂用户的详细信息。
 type UserDetail struct {
 	User
-	Email            string `json:"email"`
-	Bio              string `json:"bio"`
-	CreatedAt        Time   `json:"created_at"`
-	IsAdmin          bool   `json:"is_admin"`
-	ProjectLimit     int    `json:"projects_limit"`
-	CanCreateGroup   bool   `json:"can_create_group"`
-	CanCreateProject bool   `json:"can_create_project"`
+	Email            string `json:"email,omitempty"`
+	Bio              string `json:"bio,omitempty"`
+	CreatedAt        Time   `json:"created_at,omitempty"`
+	IsAdmin          bool   `json:"is_admin,omitempty"`
+	ProjectLimit     int    `json:"projects_limit,omitempty"`
+	CanCreateGroup   bool   `json:"can_create_group,omitempty"`
+	CanCreateProject bool   `json:"can_create_project,omitempty"`
 }
 
 // Member 表示一个组或项目的成员。
 type Member struct {
-	ID          int              `json:"id"`
-	Username    string           `json:"username"`
-	Name        string           `json:"name"`
-	State       string           `json:"state"`
-	AvatarURL   string           `json:"avatar_url"`
-	WebURL      string           `json:"web_url"`
-	AccessLevel AccessLevelValue `json:"access_level"`
+	ID          int              `json:"id,omitempty"`
+	Username    string           `json:"username,omitempty"`
+	Name        string           `json:"name,omitempty"`
+	State       string           `json:"state,omitempty"`
+	AvatarURL   string           `json:"avatar_url,omitempty"`
+	WebURL      string           `json:"web_url,omitempty"`
+	AccessLevel AccessLevelValue `json:"access_level,omitempty"`
 }
 
 // Commit 表示一次 Git 提交。
 type Commit struct {
-	ID             string   `json:"id"`
-	ShortID        string   `json:"short_id"`
-	Title          string   `json:"title"`
-	Message        string   `json:"message"`
-	AuthorName     string   `json:"author_name"`
-	AuthorEmail    string   `json:"author_email"`
-	AuthoredDate   Time     `json:"authored_date"`
-	CommitterName  string   `json:"committer_name"`
-	CommitterEmail string   `json:"committer_email"`
-	CommittedDate  Time     `json:"committed_date"`
-	CreatedAt      Time     `json:"created_at"`
-	ParentIDs      []string `json:"parent_ids"`
+	ID             string   `json:"id,omitempty"`
+	ShortID        string   `json:"short_id,omitempty"`
+	Title          string   `json:"title,omitempty"`
+	Message        string   `json:"message,omitempty"`
+	AuthorName     string   `json:"author_name,omitempty"`
+	AuthorEmail    string   `json:"author_email,omitempty"`
+	AuthoredDate   Time     `json:"authored_date,omitempty"`
+	CommitterName  string   `json:"committer_name,omitempty"`
+	CommitterEmail string   `json:"committer_email,omitempty"`
+	CommittedDate  Time     `json:"committed_date,omitempty"`
+	CreatedAt      Time     `json:"created_at,omitempty"`
+	ParentIDs      []string `json:"parent_ids,omitempty"`
 }
 
 // Diff 表示一个文件的变更。
 type Diff struct {
-	OldPath     string `json:"old_path"`
-	NewPath     string `json:"new_path"`
-	AMode       int    `json:"a_mode"`
-	BMode       int    `json:"b_mode"`
-	Diff        string `json:"diff"`
-	NewFile     bool   `json:"new_file"`
-	RenamedFile bool   `json:"renamed_file"`
-	DeletedFile bool   `json:"deleted_file"`
-	IsTooLarge  bool   `json:"is_too_large"`
-	IsCollapse  bool   `json:"is_collapse"`
-	Additions   int    `json:"additions"`
-	Deletions   int    `json:"deletions"`
+	OldPath     string `json:"old_path,omitempty"`
+	NewPath     string `json:"new_path,omitempty"`
+	AMode       int    `json:"a_mode,omitempty"`
+	BMode       int    `json:"b_mode,omitempty"`
+	Diff        string `json:"diff,omitempty"`
+	NewFile     bool   `json:"new_file,omitempty"`
+	RenamedFile bool   `json:"renamed_file,omitempty"`
+	DeletedFile bool   `json:"deleted_file,omitempty"`
+	IsTooLarge  bool   `json:"is_too_large,omitempty"`
+	IsCollapse  bool   `json:"is_collapse,omitempty"`
+	Additions   int    `json:"additions,omitempty"`
+	Deletions   int    `json:"deletions,omitempty"`
 }
 
 // ConfigStorage 表示项目的存储配置。
 type ConfigStorage struct {
-	LimitLFSFileSize int `json:"limit_lfs_file_size"`
-	LimitSize        int `json:"limit_size"`
-	LimitFileSize    int `json:"limit_file_size"`
-	LimitLFSSize     int `json:"limit_lfs_size"`
+	LimitLFSFileSize int `json:"limit_lfs_file_size,omitempty"`
+	LimitSize        int `json:"limit_size,omitempty"`
+	LimitFileSize    int `json:"limit_file_size,omitempty"`
+	LimitLFSSize     int `json:"limit_lfs_size,omitempty"`
 }
 
 // Statistics 表示项目的统计信息。
 type Statistics struct {
-	CommitCount    int     `json:"commit_count"`
-	RepositorySize float64 `json:"repository_size"`
+	CommitCount    int     `json:"commit_count,omitempty"`
+	RepositorySize float64 `json:"repository_size,omitempty"`
 }
 
 // Ptr 返回 v 的指针，用于构造可选参数。

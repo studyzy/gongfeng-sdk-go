@@ -8,15 +8,15 @@ import (
 
 // Milestone 表示工蜂里程碑。
 type Milestone struct {
-	ID          int    `json:"id"`
-	IID         int    `json:"iid"`
-	ProjectID   int    `json:"project_id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	State       string `json:"state"`
-	DueDate     Time   `json:"due_date"`
-	CreatedAt   Time   `json:"created_at"`
-	UpdatedAt   Time   `json:"updated_at"`
+	ID          int    `json:"id,omitempty"`
+	IID         int    `json:"iid,omitempty"`
+	ProjectID   int    `json:"project_id,omitempty"`
+	Title       string `json:"title,omitempty"`
+	Description string `json:"description,omitempty"`
+	State       string `json:"state,omitempty"`
+	DueDate     Time   `json:"due_date,omitempty"`
+	CreatedAt   Time   `json:"created_at,omitempty"`
+	UpdatedAt   Time   `json:"updated_at,omitempty"`
 }
 
 // MilestonesService 处理与工蜂里程碑相关的 API。
@@ -151,17 +151,17 @@ func (s *MilestonesService) DeleteMilestone(ctx context.Context, pid interface{}
 
 // MilestoneIssue 表示里程碑下的缺陷。
 type MilestoneIssue struct {
-	ID          int      `json:"id"`
-	IID         int      `json:"iid"`
-	ProjectID   int      `json:"project_id"`
-	Title       string   `json:"title"`
-	Description string   `json:"description"`
-	State       string   `json:"state"`
-	CreatedAt   Time     `json:"created_at"`
-	UpdatedAt   Time     `json:"updated_at"`
-	Labels      []string `json:"labels"`
-	Author      *User    `json:"author"`
-	Assignee    *User    `json:"assignee"`
+	ID          int      `json:"id,omitempty"`
+	IID         int      `json:"iid,omitempty"`
+	ProjectID   int      `json:"project_id,omitempty"`
+	Title       string   `json:"title,omitempty"`
+	Description string   `json:"description,omitempty"`
+	State       string   `json:"state,omitempty"`
+	CreatedAt   Time     `json:"created_at,omitempty"`
+	UpdatedAt   Time     `json:"updated_at,omitempty"`
+	Labels      []string `json:"labels,omitempty"`
+	Author      *User    `json:"author,omitempty"`
+	Assignee    *User    `json:"assignee,omitempty"`
 }
 
 // ListMilestoneIssuesOptions 表示 ListMilestoneIssues 的可选参数。

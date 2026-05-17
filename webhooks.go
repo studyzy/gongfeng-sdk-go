@@ -8,16 +8,16 @@ import (
 
 // Webhook 表示一个项目的回调钩子。
 type Webhook struct {
-	ID                    int    `json:"id"`
-	URL                   string `json:"url"`
-	ProjectID             int    `json:"project_id"`
-	PushEvents            bool   `json:"push_events"`
-	IssuesEvents          bool   `json:"issues_events"`
-	MergeRequestsEvents   bool   `json:"merge_requests_events"`
-	TagPushEvents         bool   `json:"tag_push_events"`
-	NoteEvents            bool   `json:"note_events"`
-	EnableSSLVerification bool   `json:"enable_ssl_verification"`
-	CreatedAt             Time   `json:"created_at"`
+	ID                    int    `json:"id,omitempty"`
+	URL                   string `json:"url,omitempty"`
+	ProjectID             int    `json:"project_id,omitempty"`
+	PushEvents            bool   `json:"push_events,omitempty"`
+	IssuesEvents          bool   `json:"issues_events,omitempty"`
+	MergeRequestsEvents   bool   `json:"merge_requests_events,omitempty"`
+	TagPushEvents         bool   `json:"tag_push_events,omitempty"`
+	NoteEvents            bool   `json:"note_events,omitempty"`
+	EnableSSLVerification bool   `json:"enable_ssl_verification,omitempty"`
+	CreatedAt             Time   `json:"created_at,omitempty"`
 }
 
 // WebhooksService 处理与项目 Webhook 相关的 API 调用。

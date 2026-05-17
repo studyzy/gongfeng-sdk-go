@@ -9,33 +9,33 @@ import (
 
 // Review 表示一个 Commit 评审。
 type Review struct {
-	ID                    int         `json:"id"`
-	ProjectID             int         `json:"project_id"`
-	Title                 string      `json:"title"`
-	Description           string      `json:"description"`
-	State                 string      `json:"state"`
-	CreatedAt             Time        `json:"created_at"`
-	UpdatedAt             Time        `json:"updated_at"`
-	Author                *User       `json:"author"`
-	Reviewers             []*Reviewer `json:"reviewers"`
-	ReviewableID          int         `json:"reviewable_id"`
-	ReviewableType        string      `json:"reviewable_type"`
-	ApproverRule          int         `json:"approver_rule"`
-	NecessaryApproverRule int         `json:"necessary_approver_rule"`
-	PushResetEnabled      bool        `json:"push_reset_enabled"`
+	ID                    int         `json:"id,omitempty"`
+	ProjectID             int         `json:"project_id,omitempty"`
+	Title                 string      `json:"title,omitempty"`
+	Description           string      `json:"description,omitempty"`
+	State                 string      `json:"state,omitempty"`
+	CreatedAt             Time        `json:"created_at,omitempty"`
+	UpdatedAt             Time        `json:"updated_at,omitempty"`
+	Author                *User       `json:"author,omitempty"`
+	Reviewers             []*Reviewer `json:"reviewers,omitempty"`
+	ReviewableID          int         `json:"reviewable_id,omitempty"`
+	ReviewableType        string      `json:"reviewable_type,omitempty"`
+	ApproverRule          int         `json:"approver_rule,omitempty"`
+	NecessaryApproverRule int         `json:"necessary_approver_rule,omitempty"`
+	PushResetEnabled      bool        `json:"push_reset_enabled,omitempty"`
 }
 
 // Reviewer 表示一个评审人。
 type Reviewer struct {
-	ID          int    `json:"id"`
-	Username    string `json:"username"`
-	Name        string `json:"name"`
-	State       string `json:"state"`
-	AvatarURL   string `json:"avatar_url"`
-	Type        string `json:"type"`
-	ReviewState string `json:"review_state"`
-	CreatedAt   Time   `json:"created_at"`
-	UpdatedAt   Time   `json:"updated_at"`
+	ID          int    `json:"id,omitempty"`
+	Username    string `json:"username,omitempty"`
+	Name        string `json:"name,omitempty"`
+	State       string `json:"state,omitempty"`
+	AvatarURL   string `json:"avatar_url,omitempty"`
+	Type        string `json:"type,omitempty"`
+	ReviewState string `json:"review_state,omitempty"`
+	CreatedAt   Time   `json:"created_at,omitempty"`
+	UpdatedAt   Time   `json:"updated_at,omitempty"`
 }
 
 // ReviewsService 处理与 MR 评审和 Commit 评审相关的 API 调用。

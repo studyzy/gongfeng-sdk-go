@@ -8,12 +8,12 @@ import (
 
 // Label 表示一个项目标签。
 type Label struct {
-	Name                   string `json:"name"`
-	Color                  string `json:"color"`
-	Description            string `json:"description"`
-	OpenIssuesCount        int    `json:"open_issues_count"`
-	ClosedIssuesCount      int    `json:"closed_issues_count"`
-	OpenMergeRequestsCount int    `json:"open_merge_requests_count"`
+	Name                   string `json:"name,omitempty"`
+	Color                  string `json:"color,omitempty"`
+	Description            string `json:"description,omitempty"`
+	OpenIssuesCount        int    `json:"open_issues_count,omitempty"`
+	ClosedIssuesCount      int    `json:"closed_issues_count,omitempty"`
+	OpenMergeRequestsCount int    `json:"open_merge_requests_count,omitempty"`
 }
 
 // LabelsService 处理与 Label 相关的 API 调用。

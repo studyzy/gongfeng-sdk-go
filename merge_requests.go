@@ -9,46 +9,46 @@ import (
 
 // MergeRequest 表示工蜂合并请求。
 type MergeRequest struct {
-	ID              int        `json:"id"`
-	IID             int        `json:"iid"`
-	Title           string     `json:"title"`
-	Description     string     `json:"description"`
-	State           string     `json:"state"`
-	TargetBranch    string     `json:"target_branch"`
-	SourceBranch    string     `json:"source_branch"`
-	TargetProjectID int        `json:"target_project_id"`
-	SourceProjectID int        `json:"source_project_id"`
-	Assignee        *User      `json:"assignee"`
-	Author          *User      `json:"author"`
-	Milestone       *Milestone `json:"milestone"`
-	ProjectID       int        `json:"project_id"`
-	WorkInProgress  bool       `json:"work_in_progress"`
-	Labels          []string   `json:"labels"`
-	CreatedAt       Time       `json:"created_at"`
-	UpdatedAt       Time       `json:"updated_at"`
-	Upvotes         int        `json:"upvotes"`
-	Downvotes       int        `json:"downvotes"`
+	ID              int        `json:"id,omitempty"`
+	IID             int        `json:"iid,omitempty"`
+	Title           string     `json:"title,omitempty"`
+	Description     string     `json:"description,omitempty"`
+	State           string     `json:"state,omitempty"`
+	TargetBranch    string     `json:"target_branch,omitempty"`
+	SourceBranch    string     `json:"source_branch,omitempty"`
+	TargetProjectID int        `json:"target_project_id,omitempty"`
+	SourceProjectID int        `json:"source_project_id,omitempty"`
+	Assignee        *User      `json:"assignee,omitempty"`
+	Author          *User      `json:"author,omitempty"`
+	Milestone       *Milestone `json:"milestone,omitempty"`
+	ProjectID       int        `json:"project_id,omitempty"`
+	WorkInProgress  bool       `json:"work_in_progress,omitempty"`
+	Labels          []string   `json:"labels,omitempty"`
+	CreatedAt       Time       `json:"created_at,omitempty"`
+	UpdatedAt       Time       `json:"updated_at,omitempty"`
+	Upvotes         int        `json:"upvotes,omitempty"`
+	Downvotes       int        `json:"downvotes,omitempty"`
 }
 
 // MergeRequestChanges 表示合并请求的详情及其代码变更。
 type MergeRequestChanges struct {
 	MergeRequest
-	Files []*Diff `json:"files"`
+	Files []*Diff `json:"files,omitempty"`
 }
 
 // MRComment 表示合并请求的评论。
 type MRComment struct {
-	ID         int    `json:"id"`
-	Body       string `json:"body"`
-	Attachment string `json:"attachment"`
-	Author     *User  `json:"author"`
-	CreatedAt  Time   `json:"created_at"`
-	System     bool   `json:"system"`
+	ID         int    `json:"id,omitempty"`
+	Body       string `json:"body,omitempty"`
+	Attachment string `json:"attachment,omitempty"`
+	Author     *User  `json:"author,omitempty"`
+	CreatedAt  Time   `json:"created_at,omitempty"`
+	System     bool   `json:"system,omitempty"`
 }
 
 // MRSubscription 表示合并请求的订阅状态。
 type MRSubscription struct {
-	Subscribed bool `json:"subscribed"`
+	Subscribed bool `json:"subscribed,omitempty"`
 }
 
 // MergeRequestsService 处理与工蜂合并请求相关的 API。

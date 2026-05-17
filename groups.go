@@ -8,12 +8,12 @@ import (
 
 // Group 表示工蜂项目组。
 type Group struct {
-	ID          int        `json:"id"`
-	Name        string     `json:"name"`
-	Path        string     `json:"path"`
-	WebURL      string     `json:"web_url"`
-	Description string     `json:"description"`
-	AvatarURL   string     `json:"avatar_url"`
+	ID          int        `json:"id,omitempty"`
+	Name        string     `json:"name,omitempty"`
+	Path        string     `json:"path,omitempty"`
+	WebURL      string     `json:"web_url,omitempty"`
+	Description string     `json:"description,omitempty"`
+	AvatarURL   string     `json:"avatar_url,omitempty"`
 	Projects    []*Project `json:"projects,omitempty"`
 }
 
