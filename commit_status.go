@@ -78,7 +78,7 @@ func (s *CommitStatusService) ListCommitStatuses(ctx context.Context, pid interf
 	if err != nil {
 		return nil, nil, err
 	}
-	path := fmt.Sprintf("projects/%s/repository/commits/%s/statuses", project, pathEscape(sha))
+	path := fmt.Sprintf("projects/%s/commits/%s/statuses", project, pathEscape(sha))
 
 	req, err := s.client.NewRequest(ctx, http.MethodGet, path, opts)
 	if err != nil {
@@ -100,7 +100,7 @@ func (s *CommitStatusService) GetCommitStatusResult(ctx context.Context, pid int
 	if err != nil {
 		return nil, nil, err
 	}
-	path := fmt.Sprintf("projects/%s/repository/commits/%s/status", project, pathEscape(ref))
+	path := fmt.Sprintf("projects/%s/commits/%s/status", project, pathEscape(ref))
 
 	req, err := s.client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {

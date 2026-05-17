@@ -46,7 +46,7 @@ func TestCreateCommitStatus(t *testing.T) {
 func TestListCommitStatuses(t *testing.T) {
 	client, mux := setup(t)
 
-	mux.HandleFunc("/api/v3/projects/1/repository/commits/abc123/statuses", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/v3/projects/1/commits/abc123/statuses", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			t.Fatalf("unexpected method: %s", r.Method)
 		}
@@ -76,7 +76,7 @@ func TestListCommitStatuses(t *testing.T) {
 func TestGetCommitStatusResult(t *testing.T) {
 	client, mux := setup(t)
 
-	mux.HandleFunc("/api/v3/projects/1/repository/commits/main/status", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/v3/projects/1/commits/main/status", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			t.Fatalf("unexpected method: %s", r.Method)
 		}
