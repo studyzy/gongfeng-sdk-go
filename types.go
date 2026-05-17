@@ -39,6 +39,8 @@ func (t *Time) UnmarshalJSON(data []byte) error {
 	// 尝试多种时间格式
 	layouts := []string{
 		"2006-01-02T15:04:05+08:00",
+		"2006-01-02T15:04:05+0000",
+		"2006-01-02T15:04:05-0700",
 		"2006-01-02T15:04:05Z",
 		"2006-01-02T15:04:05.000+08:00",
 		time.RFC3339,
@@ -170,10 +172,10 @@ type Diff struct {
 
 // ConfigStorage 表示项目的存储配置。
 type ConfigStorage struct {
-	LimitLFSFileSize int `json:"limit_lfs_file_size,omitempty"`
-	LimitSize        int `json:"limit_size,omitempty"`
-	LimitFileSize    int `json:"limit_file_size,omitempty"`
-	LimitLFSSize     int `json:"limit_lfs_size,omitempty"`
+	LimitLFSFileSize float64 `json:"limit_lfs_file_size,omitempty"`
+	LimitSize        float64 `json:"limit_size,omitempty"`
+	LimitFileSize    float64 `json:"limit_file_size,omitempty"`
+	LimitLFSSize     float64 `json:"limit_lfs_size,omitempty"`
 }
 
 // Statistics 表示项目的统计信息。
