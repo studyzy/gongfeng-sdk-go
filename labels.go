@@ -104,6 +104,8 @@ func (s *LabelsService) DeleteLabel(ctx context.Context, pid interface{}, opts *
 // ListLabelsOptions 是 ListLabels 的可选参数。
 type ListLabelsOptions struct {
 	ListOptions
+	OrderBy *string `url:"order_by,omitempty" json:"order_by,omitempty"`
+	Sort    *string `url:"sort,omitempty" json:"sort,omitempty"`
 }
 
 // ListLabels 获取项目的标签列表。

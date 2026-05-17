@@ -58,13 +58,17 @@ type MergeRequestsService struct {
 
 // CreateMergeRequestOptions 表示 CreateMergeRequest 的可选参数。
 type CreateMergeRequestOptions struct {
-	SourceBranch *string `json:"source_branch,omitempty"`
-	TargetBranch *string `json:"target_branch,omitempty"`
-	Title        *string `json:"title,omitempty"`
-	AssigneeID   *int    `json:"assignee_id,omitempty"`
-	Description  *string `json:"description,omitempty"`
-	Reviewers    *string `json:"reviewers,omitempty"`
-	ApproverRule *string `json:"approver_rule,omitempty"`
+	SourceBranch          *string `json:"source_branch,omitempty"`
+	TargetBranch          *string `json:"target_branch,omitempty"`
+	Title                 *string `json:"title,omitempty"`
+	AssigneeID            *int    `json:"assignee_id,omitempty"`
+	Description           *string `json:"description,omitempty"`
+	TargetProjectID       *int    `json:"target_project_id,omitempty"`
+	Labels                *string `json:"labels,omitempty"`
+	Reviewers             *string `json:"reviewers,omitempty"`
+	NecessaryReviewers    *string `json:"necessary_reviewers,omitempty"`
+	ApproverRule          *int    `json:"approver_rule,omitempty"`
+	NecessaryApproverRule *int    `json:"necessary_approver_rule,omitempty"`
 }
 
 // CreateMergeRequest 新增合并请求。
@@ -127,7 +131,7 @@ func (s *MergeRequestsService) ListMergeRequestCommits(ctx context.Context, pid 
 	if err != nil {
 		return nil, nil, err
 	}
-	u := fmt.Sprintf("projects/%s/merge_request/%d/commits", project, mergeRequestID)
+	u := fmt.Sprintf("projects/%s/merge_requests/%d/commits", project, mergeRequestID)
 
 	req, err := s.client.NewRequest(ctx, http.MethodGet, u, opts)
 	if err != nil {
@@ -173,6 +177,8 @@ func (s *MergeRequestsService) CreateMRComment(ctx context.Context, pid interfac
 // ListMRCommentsOptions 表示 ListMRComments 的可选参数。
 type ListMRCommentsOptions struct {
 	ListOptions
+	CreatedAfter  *string `url:"created_after,omitempty" json:"created_after,omitempty"`
+	CreatedBefore *string `url:"created_before,omitempty" json:"created_before,omitempty"`
 }
 
 // ListMRComments 获取合并请求的评论列表。
@@ -204,6 +210,7 @@ type UpdateMergeRequestOptions struct {
 	TargetBranch *string `json:"target_branch,omitempty"`
 	AssigneeID   *int    `json:"assignee_id,omitempty"`
 	StateEvent   *string `json:"state_event,omitempty"`
+	Labels       *string `json:"labels,omitempty"`
 }
 
 // UpdateMergeRequest 更新合并请求。
@@ -375,7 +382,7 @@ func (s *MergeRequestsService) DownloadMergeRequestChangedFiles(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	u := fmt.Sprintf("projects/%s/merge_request/%d/changed_files", project, mergeRequestID)
+	u := fmt.Sprintf("projects/%s/merge_requests/%d/changed_files", project, mergeRequestID)
 
 	req, err := s.client.NewRequest(ctx, http.MethodGet, u, nil)
 	if err != nil {

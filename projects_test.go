@@ -92,29 +92,6 @@ func TestCreateProject(t *testing.T) {
 	}
 }
 
-func TestSearchProjects(t *testing.T) {
-	client, mux := setup(t)
-
-	mux.HandleFunc("/api/v3/projects/search/test", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			t.Fatalf("unexpected method: %s", r.Method)
-		}
-		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprint(w, `[{"id":1,"name":"test-proj"}]`)
-	})
-
-	projects, _, err := client.Projects.SearchProjects(context.Background(), "test")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(projects) != 1 {
-		t.Fatalf("expected 1 project, got %d", len(projects))
-	}
-	if projects[0].Name != "test-proj" {
-		t.Fatalf("expected name 'test-proj', got %q", projects[0].Name)
-	}
-}
-
 func TestListProjectMembers(t *testing.T) {
 	client, mux := setup(t)
 

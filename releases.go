@@ -6,13 +6,26 @@ import (
 	"net/http"
 )
 
+// ReleaseRef 表示 Release 关联的 Tag 引用信息。
+type ReleaseRef struct {
+	Name    string  `json:"name,omitempty"`
+	Message string  `json:"message,omitempty"`
+	Commit  *Commit `json:"commit,omitempty"`
+}
+
 // Release 表示一个项目发布版本。
 type Release struct {
-	TagName     string  `json:"tag_name,omitempty"`
-	Description string  `json:"description,omitempty"`
-	CreatedAt   Time    `json:"created_at,omitempty"`
-	Author      *User   `json:"author,omitempty"`
-	Commit      *Commit `json:"commit,omitempty"`
+	ID          int          `json:"id,omitempty"`
+	ProjectID   int          `json:"project_id,omitempty"`
+	Tag         string       `json:"tag,omitempty"`
+	Title       string       `json:"title,omitempty"`
+	Type        string       `json:"type,omitempty"`
+	Description string       `json:"description,omitempty"`
+	Attachments interface{}  `json:"attachments,omitempty"`
+	Ref         *ReleaseRef  `json:"ref,omitempty"`
+	CreatedAt   Time         `json:"created_at,omitempty"`
+	UpdatedAt   Time         `json:"updated_at,omitempty"`
+	Author      *User        `json:"author,omitempty"`
 }
 
 // ReleasesService 处理与 Release 相关的 API 调用。
@@ -47,13 +60,13 @@ func (s *ReleasesService) ListReleases(ctx context.Context, pid interface{}, opt
 	return releases, resp, nil
 }
 
-// GetRelease 获取项目中指定 tag 的 Release。
-func (s *ReleasesService) GetRelease(ctx context.Context, pid interface{}, tagName string) (*Release, *Response, error) {
+// GetRelease 获取项目中指定 ID 的 Release。
+func (s *ReleasesService) GetRelease(ctx context.Context, pid interface{}, releaseID int) (*Release, *Response, error) {
 	project, err := parseID(pid)
 	if err != nil {
 		return nil, nil, err
 	}
-	path := fmt.Sprintf("projects/%s/releases/%s", project, pathEscape(tagName))
+	path := fmt.Sprintf("projects/%s/releases/%d", project, releaseID)
 
 	req, err := s.client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
@@ -71,7 +84,10 @@ func (s *ReleasesService) GetRelease(ctx context.Context, pid interface{}, tagNa
 
 // CreateReleaseOptions 是 CreateRelease 的可选参数。
 type CreateReleaseOptions struct {
-	TagName     *string `json:"tag_name,omitempty" url:"tag_name,omitempty"`
+	Tag         *string `json:"tag,omitempty" url:"tag,omitempty"`
+	StartPoint  *string `json:"start_point,omitempty" url:"start_point,omitempty"`
+	Title       *string `json:"title,omitempty" url:"title,omitempty"`
+	Type        *string `json:"type,omitempty" url:"type,omitempty"`
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
 }
 
@@ -102,13 +118,13 @@ type UpdateReleaseOptions struct {
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
 }
 
-// UpdateRelease 更新项目中指定 tag 的 Release。
-func (s *ReleasesService) UpdateRelease(ctx context.Context, pid interface{}, tagName string, opts *UpdateReleaseOptions) (*Release, *Response, error) {
+// UpdateRelease 更新项目中指定 ID 的 Release。
+func (s *ReleasesService) UpdateRelease(ctx context.Context, pid interface{}, releaseID int, opts *UpdateReleaseOptions) (*Release, *Response, error) {
 	project, err := parseID(pid)
 	if err != nil {
 		return nil, nil, err
 	}
-	path := fmt.Sprintf("projects/%s/releases/%s", project, pathEscape(tagName))
+	path := fmt.Sprintf("projects/%s/releases/%d", project, releaseID)
 
 	req, err := s.client.NewRequest(ctx, http.MethodPut, path, opts)
 	if err != nil {
@@ -124,13 +140,13 @@ func (s *ReleasesService) UpdateRelease(ctx context.Context, pid interface{}, ta
 	return &release, resp, nil
 }
 
-// DeleteRelease 删除项目中指定 tag 的 Release。
-func (s *ReleasesService) DeleteRelease(ctx context.Context, pid interface{}, tagName string) (*Response, error) {
+// DeleteRelease 删除项目中指定 ID 的 Release。
+func (s *ReleasesService) DeleteRelease(ctx context.Context, pid interface{}, releaseID int) (*Response, error) {
 	project, err := parseID(pid)
 	if err != nil {
 		return nil, err
 	}
-	path := fmt.Sprintf("projects/%s/releases/%s", project, pathEscape(tagName))
+	path := fmt.Sprintf("projects/%s/releases/%d", project, releaseID)
 
 	req, err := s.client.NewRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {

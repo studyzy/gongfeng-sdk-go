@@ -156,24 +156,6 @@ func (s *ProjectsService) CreateProject(ctx context.Context, opts *CreateProject
 	return &p, resp, nil
 }
 
-// SearchProjects 按关键词搜索项目。
-func (s *ProjectsService) SearchProjects(ctx context.Context, query string) ([]*Project, *Response, error) {
-	u := fmt.Sprintf("projects/search/%s", pathEscape(query))
-
-	req, err := s.client.NewRequest(ctx, http.MethodGet, u, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	var projects []*Project
-	resp, err := s.client.Do(req, &projects)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return projects, resp, nil
-}
-
 // ListProjectMembersOptions 表示 ListProjectMembers 的可选参数。
 type ListProjectMembersOptions struct {
 	ListOptions

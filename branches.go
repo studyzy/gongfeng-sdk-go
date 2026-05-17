@@ -115,9 +115,20 @@ func (s *BranchesService) GetBranch(ctx context.Context, pid interface{}, branch
 
 // ProtectedBranch 表示保护分支的详情。
 type ProtectedBranch struct {
-	Name               string `json:"name,omitempty"`
-	DevelopersCanPush  bool   `json:"developers_can_push,omitempty"`
-	DevelopersCanMerge bool   `json:"developers_can_merge,omitempty"`
+	Name                       string      `json:"name,omitempty"`
+	Protected                  bool        `json:"protected,omitempty"`
+	DevelopersCanPush          bool        `json:"developers_can_push,omitempty"`
+	DevelopersCanMerge         bool        `json:"developers_can_merge,omitempty"`
+	Commit                     *Commit     `json:"commit,omitempty"`
+	SuggestionReviewers        []User      `json:"suggestion_reviewers,omitempty"`
+	NecessaryReviewers         []User      `json:"necessary_reviewers,omitempty"`
+	PushResetEnabled           bool        `json:"push_reset_enabled,omitempty"`
+	CanApproveByCreator        bool        `json:"can_approve_by_creator,omitempty"`
+	AutoCreateReviewAfterPush  bool        `json:"auto_create_review_after_push,omitempty"`
+	ApproverRule               int         `json:"approver_rule,omitempty"`
+	NecessaryApproverRule      int         `json:"necessary_approver_rule,omitempty"`
+	MergeRequestTemplate       *string     `json:"merge_request_template,omitempty"`
+	PathReviewerRules          string      `json:"path_reviewer_rules,omitempty"`
 }
 
 // GetProtectedBranch 获取保护分支详情。

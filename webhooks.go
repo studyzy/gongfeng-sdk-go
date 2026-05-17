@@ -16,6 +16,7 @@ type Webhook struct {
 	MergeRequestsEvents   bool   `json:"merge_requests_events,omitempty"`
 	TagPushEvents         bool   `json:"tag_push_events,omitempty"`
 	NoteEvents            bool   `json:"note_events,omitempty"`
+	ReviewEvents          bool   `json:"review_events,omitempty"`
 	EnableSSLVerification bool   `json:"enable_ssl_verification,omitempty"`
 	CreatedAt             Time   `json:"created_at,omitempty"`
 }
@@ -33,6 +34,8 @@ type AddWebhookOptions struct {
 	MergeRequestsEvents   *bool   `json:"merge_requests_events,omitempty" url:"merge_requests_events,omitempty"`
 	TagPushEvents         *bool   `json:"tag_push_events,omitempty" url:"tag_push_events,omitempty"`
 	NoteEvents            *bool   `json:"note_events,omitempty" url:"note_events,omitempty"`
+	ReviewEvents          *bool   `json:"review_events,omitempty" url:"review_events,omitempty"`
+	Token                 *string `json:"token,omitempty" url:"token,omitempty"`
 	EnableSSLVerification *bool   `json:"enable_ssl_verification,omitempty" url:"enable_ssl_verification,omitempty"`
 }
 
@@ -115,6 +118,8 @@ type EditWebhookOptions struct {
 	MergeRequestsEvents   *bool   `json:"merge_requests_events,omitempty" url:"merge_requests_events,omitempty"`
 	TagPushEvents         *bool   `json:"tag_push_events,omitempty" url:"tag_push_events,omitempty"`
 	NoteEvents            *bool   `json:"note_events,omitempty" url:"note_events,omitempty"`
+	ReviewEvents          *bool   `json:"review_events,omitempty" url:"review_events,omitempty"`
+	Token                 *string `json:"token,omitempty" url:"token,omitempty"`
 	EnableSSLVerification *bool   `json:"enable_ssl_verification,omitempty" url:"enable_ssl_verification,omitempty"`
 }
 

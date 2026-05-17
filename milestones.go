@@ -29,7 +29,6 @@ type CreateMilestoneOptions struct {
 	Title       *string `json:"title,omitempty"`
 	Description *string `json:"description,omitempty"`
 	DueDate     *string `json:"due_date,omitempty"`
-	StateEvent  *string `json:"state_event,omitempty"`
 }
 
 // CreateMilestone 新增里程碑。
@@ -87,6 +86,10 @@ func (s *MilestonesService) EditMilestone(ctx context.Context, pid interface{}, 
 // ListMilestonesOptions 表示 ListMilestones 的可选参数。
 type ListMilestonesOptions struct {
 	ListOptions
+	IID     *int    `url:"iid,omitempty" json:"iid,omitempty"`
+	State   *string `url:"state,omitempty" json:"state,omitempty"`
+	OrderBy *string `url:"order_by,omitempty" json:"order_by,omitempty"`
+	Sort    *string `url:"sort,omitempty" json:"sort,omitempty"`
 }
 
 // ListMilestones 获取项目的里程碑列表。

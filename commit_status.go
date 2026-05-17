@@ -15,15 +15,20 @@ type CommitStatus struct {
 	Name        string `json:"name,omitempty"`
 	TargetURL   string `json:"target_url,omitempty"`
 	Description string `json:"description,omitempty"`
+	Context     string `json:"context,omitempty"`
+	Block       bool   `json:"block,omitempty"`
 	CreatedAt   Time   `json:"created_at,omitempty"`
+	UpdatedAt   Time   `json:"updated_at,omitempty"`
 	Author      *User  `json:"author,omitempty"`
 }
 
 // CommitStatusResult 表示一个提交的检测组合结果。
 type CommitStatusResult struct {
-	SHA      string          `json:"sha,omitempty"`
-	Status   string          `json:"status,omitempty"`
-	Statuses []*CommitStatus `json:"statuses,omitempty"`
+	SHA        string          `json:"sha,omitempty"`
+	Status     string          `json:"status,omitempty"`
+	Block      bool            `json:"block,omitempty"`
+	TotalCount int             `json:"total_count,omitempty"`
+	Statuses   []*CommitStatus `json:"statuses,omitempty"`
 }
 
 // CommitStatusService 处理与提交检测状态相关的 API 调用。
@@ -39,6 +44,7 @@ type CreateCommitStatusOptions struct {
 	TargetURL   *string `json:"target_url,omitempty" url:"target_url,omitempty"`
 	Description *string `json:"description,omitempty" url:"description,omitempty"`
 	Context     *string `json:"context,omitempty" url:"context,omitempty"`
+	Block       *bool   `json:"block,omitempty" url:"block,omitempty"`
 }
 
 // CreateCommitStatus 为指定提交新建一个检测结果。
