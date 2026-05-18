@@ -432,20 +432,16 @@ func TestIntegration_IssueLifecycle(t *testing.T) {
 		t.Fatalf("created issue missing id: %+v", created)
 	}
 
-	// 工蜂 GET/PUT/DELETE /projects/:pid/issues/:id 走全局主键 id，而非项目内 iid。
+	// 工蜂 GET/PUT /projects/:pid/issues/:id 走全局主键 id，而非项目内 iid。
+	// 工蜂 API 不支持删除 Issue，cleanup 只能关闭。
 	issueID := created.ID
 	t.Cleanup(func() {
 		cleanupCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
-		// 先尝试关闭。
 		if _, _, err := c.Issues.UpdateIssue(cleanupCtx, integrationProject, issueID, &UpdateIssueOptions{
 			StateEvent: Ptr("close"),
 		}); err != nil {
 			t.Logf("cleanup UpdateIssue close(%d): %v", issueID, err)
-		}
-		// 再尝试删除。失败不影响其他测试。
-		if _, err := c.Issues.DeleteIssue(cleanupCtx, integrationProject, issueID); err != nil {
-			t.Logf("cleanup DeleteIssue(%d): %v", issueID, err)
 		}
 	})
 

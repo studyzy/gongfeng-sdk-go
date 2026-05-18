@@ -224,19 +224,3 @@ func (s *IssuesService) UnsubscribeIssue(ctx context.Context, pid interface{}, i
 
 	return s.client.Do(req, nil)
 }
-
-// DeleteIssue 删除项目中指定 ID 的缺陷。
-func (s *IssuesService) DeleteIssue(ctx context.Context, pid interface{}, issueID int) (*Response, error) {
-	project, err := parseID(pid)
-	if err != nil {
-		return nil, err
-	}
-	path := fmt.Sprintf("projects/%s/issues/%d", project, issueID)
-
-	req, err := s.client.NewRequest(ctx, http.MethodDelete, path, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return s.client.Do(req, nil)
-}

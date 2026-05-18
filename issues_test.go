@@ -133,22 +133,6 @@ func TestGetIssue(t *testing.T) {
 	}
 }
 
-func TestDeleteIssue(t *testing.T) {
-	client, mux := setup(t)
-
-	mux.HandleFunc("/api/v3/projects/1/issues/1", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodDelete {
-			t.Fatalf("unexpected method: %s", r.Method)
-		}
-		w.WriteHeader(http.StatusOK)
-	})
-
-	_, err := client.Issues.DeleteIssue(context.Background(), 1, 1)
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
 func TestGetIssueSubscription(t *testing.T) {
 	client, mux := setup(t)
 
